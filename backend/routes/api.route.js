@@ -1,9 +1,11 @@
 import express from "express";
 const router = express.Router();
 
-router.get("/create-tokens", (req, res) => {
+router.post("/create-tokens", (req, res) => {
 	try {
-		res.json({ message: "create tokens" });
+		const body = req.body;
+
+		res.json(body);
 	} catch (error) {
 		console.error(error);
 	}

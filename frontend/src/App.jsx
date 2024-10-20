@@ -1,14 +1,21 @@
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
 import "./App.css";
+import axios from "axios";
 
 function App() {
 	const responseGoogle = (response) => {
 		console.log("Google OAuth Response:", response);
-		if (response.credential) {
-			const token = response.credential;
-			console.log("Access Token:", token);
-		}
+		const { credential } = response;
+
+		axios
+			.post(`/api/create-tokens`, {
+				credential,
+			})
+			.then((res) => {
+				console.log(res.data);
+			})
+			.catch((err) => console.error(err));
 	};
 
 	const responseError = (error) => {
@@ -24,10 +31,6 @@ function App() {
 					<GoogleLogin
 						onSuccess={responseGoogle}
 						onError={responseError}
-						cookiePolicy={"single_host_origin"}
-						//this is important
-						responseType="code"
-						accessType="offline"
 						scope="openid email profile https://www.googleapis.com/auth/calendar"
 					/>
 				</div>
